@@ -1,6 +1,10 @@
-qDEFINES =	-DSYS5  -DBSD_SELECT   -DNCURSE 
+DEFINES =	-DSYS5  -DBSD_SELECT -DHAS_UNISTD  -DHAS_STDLIB -DHAS_CTYPE -DHAS_SYS_IOCTL -DHAS_SYS_WAIT -DHAS_NCURSES -DHAS_UNISTD -DHAS_STDARG -DHAS_STDLIB -DHAS_SYS_WAIT -DSLCT_HDR
 
-CFLAGS =	-DHAS_UNISTD  -DHAS_STDLIB -DHAS_CTYPE -DHAS_SYS_IOCTL -DHAS_SYS_WAIT -DHAS_NCURSES -DHAS_UNISTD -DHAS_STDARG -DHAS_STDLIB -DHAS_SYS_WAIT -Ofast -march=native -mtune=native -flto -fcommon -Wl,--allow-multiple-definition -s   -DSLCT_HDR 
+CFLAGS =	-Ofast -march=native -mtune=native -flto -fcommon
+
+LDFLAGS =	-Wl,--allow-multiple-definition -s -fuse-ld=lld
+
+main : aee
 
 install :
 	@./install-sh
@@ -9,7 +13,7 @@ uninstall :
 	@./uninstall-sh
 
 clean :
-	rm -f *.o aee xae xae_dir/*.o
+	rm -f *.o aee
 
 all :	curses
 
@@ -17,20 +21,13 @@ CC = clang
 
 OBJS = aee.o control.o format.o localize.o srch_rep.o delete.o mark.o motion.o keys.o help.o windows.o journal.o file.o
 
-main = curses
-
 .c.o: 
 	$(CC) $(DEFINES) -c $*.c $(CFLAGS)
 
-curses :	$(OBJS)
-	$(CC) -o aee $(OBJS) $(CFLAGS) $(LDFLAGS) -lncurses 
+aee :	$(OBJS)
+	$(CC) -o aee $(OBJS) $(CFLAGS) $(LDFLAGS) -lncursesw 
 
-aee :	$(OBJS) new_curse.o
-	$(CC) -o aee $(OBJS) new_curse.o $(CFLAGS) 
-
-new_curse.o :	new_curse.c new_curse.h
-	$(CC) new_curse.c -c $(DEFINES) $(CFLAGS)
-
+# new_curse doesn't build with new build system, it is deprecated
 
 aee.o: aee.c aee.h new_curse.h aee_version.h
 control.o: control.c aee.h new_curse.h 

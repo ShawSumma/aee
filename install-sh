@@ -4,7 +4,7 @@ set -x
 
 rm -f /usr/local/bin/aee
 rm -f /usr/local/bin/rae
-rm -f /usr/local/man/man1/aee.1
+rm -f /usr/local/share/man/man1/aee.1
 rm -f /usr/local/lib/help.ae
 
 if [ ! -d /usr/local/bin ]
@@ -13,10 +13,9 @@ then
 	mkdir /usr/local/bin
 fi
 
-if [ ! -d /usr/local/man/man1 ]
+if [ ! -d /usr/local/share/man/man1 ]
 then
-	mkdir /usr/local/man
-	mkdir /usr/local/man/man1
+	mkdir  /usr/local/share/man/man1
 fi
 
 if [ ! -d /usr/local/aee ]
@@ -29,8 +28,8 @@ then
 	install  aee     /usr/local/bin
 fi
 
-install  aee.1   /usr/local/man/man1
-install  help.ae /usr/local/aee
+install  aee.1   /usr/local/share/man/man1
+install  help.ae /usr/local/lib
 
 cd /usr/local/bin
 if [ -x aee ]
